@@ -14,7 +14,7 @@ export function loadToken(root) {
     try {
       const txt = fs.readFileSync(path.join(root, f), "utf8");
       const m = txt.match(/^\s*GITHUB_TOKEN\s*=\s*(.+)\s*$/m);
-      if (m) return m[1].replace(/^["']|["']$/g, "").trim();
+      if (m) return m[1].trim().replace(/^["']|["']$/g, "").trim();
     } catch {}
   }
   return null;
