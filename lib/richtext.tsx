@@ -85,9 +85,9 @@ const figure = {
     const cap = token.caption
       ? `<figcaption>${escapeHtml(token.caption as string)}</figcaption>`
       : "";
-    return `<figure class="body-figure"><img src="${token.href}" alt="${escapeHtml(
-      token.alt as string,
-    )}" />${cap}</figure>\n`;
+    return `<figure class="body-figure"><img src="${escapeHtml(
+      token.href as string,
+    )}" alt="${escapeHtml(token.alt as string)}" />${cap}</figure>\n`;
   },
 };
 

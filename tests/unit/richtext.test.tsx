@@ -45,4 +45,11 @@ describe("renderBody", () => {
     expect(out).not.toContain("<script>");
     expect(out).toContain("&lt;script&gt;");
   });
+
+  it("escapes a quote in a figure's src so it can't break out of the attribute", () => {
+    const out = html('![alt](x.png"onerror="a)');
+    expect(out).toContain('<figure class="body-figure">');
+    expect(out).not.toContain('"onerror="');
+    expect(out).toContain("&quot;onerror=&quot;");
+  });
 });
