@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { parseResume } from "../../lib/resume";
+import { INLINE_WRAPPER_COMMANDS, parseResume } from "../../lib/resume";
 
 const FIXTURE = String.raw`
 % a comment line with \section{Nope} inside
@@ -16,6 +16,7 @@ const FIXTURE = String.raw`
 \resumeSubheading{Research Assistant}{Apr 2025 -- Sep 2025}{Some Lab \& Institute}{Frankfurt}
 \resumeItem{Built a \textbf{VLA} pipeline with 95\% success.}
 \resumeItem{Nested braces: \href{https://x.dev}{link text} end.}
+\resumeItem{Wrote \texttt{vibe}, a CLI tool.}
 
 \section{Projects}
 \resumeSubheading
@@ -52,6 +53,7 @@ describe("parseResume (fixture)", () => {
     expect(exp.bullets).toEqual([
       "Built a VLA pipeline with 95% success.",
       "Nested braces: link text end.",
+      "Wrote vibe, a CLI tool.",
     ]);
   });
 
@@ -96,12 +98,18 @@ describe.runIf(existsSync(texPath))("parseResume (fetched public/resume.tex)", (
     const entryCount = r.sections.reduce((n, s) => n + s.entries.length, 0);
     const skillCount = r.sections.reduce((n, s) => n + s.skills.length, 0);
     expect(entryCount + skillCount).toBeGreaterThan(0);
+    // Derived from stripInline()'s own wrapper list (plus vspace, its other
+    // leftover-macro strip) so a command added there is covered here too,
+    // instead of this staying a second, hand-maintained copy that can drift.
+    const leftoverInlineCommand = new RegExp(
+      `\\\\(?:${INLINE_WRAPPER_COMMANDS.join("|")}|vspace)\\b`,
+    );
     for (const s of r.sections) {
       for (const e of s.entries) {
         expect(e.title.length).toBeGreaterThan(0);
         // raw LaTeX leaking through the cleanup would render on the page
         expect(e.title).not.toMatch(/[\\{}]/);
-        for (const b of e.bullets) expect(b).not.toMatch(/\\(textbf|href|vspace)/);
+        for (const b of e.bullets) expect(b).not.toMatch(leftoverInlineCommand);
       }
     }
   });

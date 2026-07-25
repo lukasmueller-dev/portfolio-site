@@ -44,6 +44,20 @@ export interface Resume {
 
 // ---- LaTeX → plain text cleanup ---------------------------------------------
 
+// Inline formatting commands stripInline() unwraps (dropping the command,
+// keeping its content). Exported so tests can assert coverage stays in sync
+// instead of hand-maintaining a second copy of this list.
+export const INLINE_WRAPPER_COMMANDS = [
+  "textbf",
+  "textit",
+  "texttt",
+  "underline",
+  "emph",
+  "small",
+  "scshape",
+  "href",
+] as const;
+
 // Replace \href{url}{...text...} with a sentinel we can turn into a link later,
 // but for inline body text we just keep the visible text.
 function stripInline(s: string): string {
@@ -51,7 +65,7 @@ function stripInline(s: string): string {
   // \href{url}{text} → text  (drop \underline inside)
   t = t.replace(/\\href\{[^}]*\}\{([^}]*)\}/g, "$1");
   // remove common formatting wrappers, keeping their content
-  t = t.replace(/\\(?:textbf|textit|texttt|underline|emph|small|scshape|href)\b/g, "");
+  t = t.replace(new RegExp(`\\\\(?:${INLINE_WRAPPER_COMMANDS.join("|")})\\b`, "g"), "");
   // \& → &, \% → %, \$ → $, \# → #, \_ → _
   t = t.replace(/\\([&%$#_])/g, "$1");
   // ranges and dashes
