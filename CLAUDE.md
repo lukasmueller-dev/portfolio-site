@@ -53,7 +53,9 @@ package version** (`VLA_ASSET_BASE = /vla/${pkg.version}`), rather than
 hardcoding it, because assets are validated against constants compiled into
 that exact package version — a stale hardcoded path 404s silently on the next
 bump. `scripts/copy-vla-assets.mjs` copies `node_modules/mini-vla/assets/`
-into `public/vla/<version>/` on `predev`/`prebuild`/`pretest`, since the
+into `public/vla/<version>/` on `predev`/`prebuild`/`pretest`, and via
+`open-next.config.ts`'s `buildCommand` override for `preview`/`deploy`/
+`e2e:build` (which bypass `npm run build`'s own `prebuild` hook), since the
 directory is gitignored.
 
 **CI runs two independent lanes** (`.github/workflows/ci.yml`): `check`
