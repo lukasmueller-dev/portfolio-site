@@ -33,40 +33,21 @@ import { fileURLToPath } from "node:url";
 import { parseProjectMd } from "../lib/project-md.ts";
 import { loadToken } from "./lib/github-token.mjs";
 import { deriveSlug } from "./lib/slug.mjs";
+import { ghHeaders as sharedGhHeaders, ghFile as sharedGhFile, readExisting as sharedReadExisting } from "./lib/github-fetch.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = path.join(root, "lib", "projects-data.json");
 
 const TOKEN = loadToken(root);
 
-function ghHeaders() {
-  const h = { Accept: "application/vnd.github+json", "User-Agent": "portfolio-build" };
-  if (TOKEN) h.Authorization = `Bearer ${TOKEN}`;
-  return h;
-}
+const ghHeaders = () => sharedGhHeaders(TOKEN);
+const ghFile = (repo, filePath) => sharedGhFile(TOKEN, repo, filePath);
+const readExisting = () => sharedReadExisting(OUT);
 
 async function ghJson(url) {
   const res = await fetch(url, { headers: ghHeaders() });
   if (!res.ok) throw new Error(`${res.status} ${res.statusText} for ${url}`);
   return res.json();
-}
-
-// Fetch a repo file's raw bytes via the Contents API (works for private repos).
-async function ghFile(repo, filePath) {
-  const url = `https://api.github.com/repos/${repo}/contents/${filePath}`;
-  const res = await fetch(url, {
-    headers: { ...ghHeaders(), Accept: "application/vnd.github.raw" },
-  });
-  if (!res.ok) throw new Error(`${res.status} for ${repo}/${filePath}`);
-  return Buffer.from(await res.arrayBuffer());
-}
-
-function readExisting() {
-  try {
-    return JSON.parse(fs.readFileSync(OUT, "utf8"));
-  } catch {
-    return [];
-  }
 }
 
 function topicToTag(t) {
@@ -75,14 +56,15 @@ function topicToTag(t) {
 }
 
 // Sort key for ordering projects newest-first by the START of their working
-// period. A period of "Ongoing" (active work) sorts ABOVE every dated project;
-// otherwise we key on the first month + year in the string, so a range like
+// period. A period of "Ongoing" or "...Present" (active work) sorts ABOVE
+// every dated project; otherwise we key on the first month + year in the
+// string, so a range like
 // "Jan–Jun 2026" keys on its start (Jan 2026) and a single "Oct 2025" on itself.
 // Larger key => listed earlier; a finite sentinel avoids NaN when entries tie.
 const ONGOING = Number.MAX_SAFE_INTEGER;
 function periodKey(s) {
   if (!s) return 0;
-  if (/ongoing/i.test(s)) return ONGOING;
+  if (/ongoing|present/i.test(s)) return ONGOING;
   const year = s.match(/\d{4}/)?.[0];
   const month = s.match(/[A-Za-z]{3,}/)?.[0]; // first month token (start of a range)
   const t = Date.parse(`1 ${month || "Jan"} ${year || ""}`.trim());

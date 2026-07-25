@@ -32,17 +32,16 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { parsePostMd } from "../lib/post-md.ts";
 import { loadToken } from "./lib/github-token.mjs";
+import { ghHeaders as sharedGhHeaders, ghFile as sharedGhFile, readExisting as sharedReadExisting } from "./lib/github-fetch.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = path.join(root, "lib", "posts-data.json");
 
 const TOKEN = loadToken(root);
 
-function ghHeaders() {
-  const h = { Accept: "application/vnd.github+json", "User-Agent": "portfolio-build" };
-  if (TOKEN) h.Authorization = `Bearer ${TOKEN}`;
-  return h;
-}
+const ghHeaders = () => sharedGhHeaders(TOKEN);
+const ghFile = (repo, filePath) => sharedGhFile(TOKEN, repo, filePath);
+const readExisting = () => sharedReadExisting(OUT);
 
 // List a repo directory. Returns [] for a missing dir (404) — an empty blog is a
 // valid state, not an error.
@@ -52,24 +51,6 @@ async function ghList(repo, dirPath) {
   if (res.status === 404) return [];
   if (!res.ok) throw new Error(`${res.status} ${res.statusText} for ${url}`);
   return res.json();
-}
-
-// Fetch a repo file's raw bytes via the Contents API (works for private repos).
-async function ghFile(repo, filePath) {
-  const url = `https://api.github.com/repos/${repo}/contents/${filePath}`;
-  const res = await fetch(url, {
-    headers: { ...ghHeaders(), Accept: "application/vnd.github.raw" },
-  });
-  if (!res.ok) throw new Error(`${res.status} for ${repo}/${filePath}`);
-  return Buffer.from(await res.arrayBuffer());
-}
-
-function readExisting() {
-  try {
-    return JSON.parse(fs.readFileSync(OUT, "utf8"));
-  } catch {
-    return [];
-  }
 }
 
 // Sort key from a "Mon YYYY" (or any Date-parseable) date string; newest first.
