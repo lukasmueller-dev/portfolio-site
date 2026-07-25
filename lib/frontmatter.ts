@@ -21,8 +21,9 @@ export function stripQuotes(s: string): string {
 /** Parse one frontmatter line as `key: value`. Returns null for a blank line,
     a `#` comment, or anything not matching that shape — callers skip those. */
 export function parseKvLine(line: string): { key: string; value: string } | null {
-  if (!line.trim() || line.trim().startsWith("#")) return null;
-  const kv = /^([A-Za-z][\w]*):\s*(.*)$/.exec(line);
+  const trimmed = line.trim();
+  if (!trimmed || trimmed.startsWith("#")) return null;
+  const kv = /^([A-Za-z][\w]*):\s*(.*)$/.exec(trimmed);
   if (!kv) return null;
   return { key: kv[1], value: kv[2].trim() };
 }
@@ -43,7 +44,7 @@ export function splitFrontmatter(raw: string): {
   // Normalize newlines and drop a leading BOM before matching.
   const src = raw.replace(/\r\n/g, "\n").replace(/^﻿/, "");
   const comment = /^<!--[\s\S]*?-->[ \t]*\n?/.exec(src);
-  const fence = /^---\n([\s\S]*?)\n---\n?/.exec(src);
+  const fence = /^---[ \t]*\n([\s\S]*?)\n---[ \t]*\n?/.exec(src);
 
   if (comment) {
     // Drop the <!-- and --> markers (plus any extra dashes) to get the raw
