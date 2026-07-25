@@ -5,7 +5,7 @@
 > snapshot, not a log — git history is the log, so finished work is removed
 > rather than archived here.
 
-_Last updated: 2026-07-23 · server (srv1841294)_
+_Last updated: 2026-07-25 · server (srv1841294)_
 
 ## Goal
 
@@ -59,6 +59,25 @@ section stays a pointer rather than a second copy that can drift from it.
   `bump-mini-vla.yml` and `nightly-e2e-full.yml`) — its 35-min timeout was
   only ever measured there; the other hero specs already cover
   mobile/webkit-mobile via `ci.yml`. See `docs/review-round-2-findings.md` #14.
+- 2026-07-25 (round 3, this branch): `nightly-e2e-full.yml`'s failure-
+  tracking issue mechanism (added round 2) hardened — paginated issue
+  lookup, a shared `TRACKING_ISSUE_TITLE` env var instead of two
+  independent literals, and a `concurrency` group to prevent duplicate
+  issues from an overlapping scheduled/manual run. Unverified against a
+  real GitHub Actions run (same limitation as round 2's own `--project`
+  change) — worth a first-hand check on the next real failure/recovery
+  cycle. See `docs/review-round-3-findings.md` #3-5.
+- 2026-07-25 (round 3, this branch): fixed a real HTML attribute-injection
+  gap in `lib/richtext.tsx`'s custom `figure` Markdown extension (unescaped
+  `href`) and a token-mangling bug in `scripts/lib/github-token.mjs`'s
+  dotfile parser (quoted value + trailing whitespace). See
+  `docs/review-round-3-findings.md` #1-2.
+- 2026-07-25 (round 3, this branch): `tests/unit/route-list.test.ts`
+  (added round 2) doesn't validate against `app/`, the actual route source
+  of truth — only cross-checks three hand-written lists against each other.
+  Reported, not fixed: a real fix needs either a filesystem scan of `app/`
+  or an explicit decision that the test's job is narrower than "guarantee
+  no route slips through." See `docs/review-round-3-findings.md` #13.
 
 ## Roadmap
 
