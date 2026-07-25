@@ -504,6 +504,13 @@ export default function Hero() {
     setStatus(s);
   };
 
+  const clearTrainWatchdog = () => {
+    if (trainWatchdogRef.current !== null) {
+      window.clearTimeout(trainWatchdogRef.current);
+      trainWatchdogRef.current = null;
+    }
+  };
+
   // The one pause/resume mechanism. Wall-clock bookkeeping (pauseStartRef /
   // pausedAccumRef) keeps the demonstration cycle resuming exactly where it
   // left off instead of jumping ahead by the real pause duration. Every caller
@@ -522,17 +529,13 @@ export default function Hero() {
     // re-arms when the ref is null, so clearing it here — not just on the
     // long-pause-already-fired path — makes that check correct for a short
     // pause too.
-    if (trainWatchdogRef.current !== null) {
-      window.clearTimeout(trainWatchdogRef.current);
-      trainWatchdogRef.current = null;
-    }
+    clearTrainWatchdog();
     flowRef.current
       ?.querySelectorAll<HTMLElement>(".vla-payload")
       .forEach((el) => {
         el.style.animationPlayState = "paused";
       });
-    statusRef.current = "paused";
-    setStatus("paused");
+    setStatusBoth("paused");
   }, []);
 
   const resumeTraining = useCallback(() => {
@@ -548,8 +551,7 @@ export default function Hero() {
         el.style.animationPlayState = "";
       });
     trainer.resume();
-    statusRef.current = "training";
-    setStatus("training");
+    setStatusBoth("training");
   }, []);
 
   // Keep the canvas theme in step with the OS preference AND the nav toggle's
@@ -1260,10 +1262,7 @@ export default function Hero() {
       window.clearTimeout(loadWatchdogRef.current);
       loadWatchdogRef.current = null;
     }
-    if (trainWatchdogRef.current !== null) {
-      window.clearTimeout(trainWatchdogRef.current);
-      trainWatchdogRef.current = null;
-    }
+    clearTrainWatchdog();
     deadLossRunRef.current = 0;
     lastWatchedBatchRef.current = 0;
     engineRef.current!.reset();
@@ -1300,8 +1299,7 @@ export default function Hero() {
     triedRef.current = false;
     episodeLiveRef.current = false;
     episodeHeldRef.current = false;
-    statusRef.current = "idle";
-    setStatus("idle");
+    setStatusBoth("idle");
   }, [syncRunCfg]);
 
   // Terminate the worker (releasing its WebGL context back to the browser's
@@ -1340,12 +1338,6 @@ export default function Hero() {
     setHostFailure("train-collapsed");
   }, [releaseWorkerToIdle]);
 
-  const clearTrainWatchdog = () => {
-    if (trainWatchdogRef.current !== null) {
-      window.clearTimeout(trainWatchdogRef.current);
-      trainWatchdogRef.current = null;
-    }
-  };
   const armTrainWatchdog = () => {
     clearTrainWatchdog();
     trainWatchdogRef.current = window.setTimeout(onTrainStalled, TRAIN_STALL_MS);
