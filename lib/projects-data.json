@@ -1,27 +1,5 @@
 [
   {
-    "slug": "algo-lens",
-    "title": "algo-lens",
-    "venue": "Open Source",
-    "period": "Ongoing",
-    "blurb": "Coming Soon.",
-    "tags": [
-      "Algorithms",
-      "Visualizations"
-    ],
-    "links": [
-      {
-        "label": "Code",
-        "href": "https://github.com/lukasmueller-dev/algo-lens"
-      },
-      {
-        "label": "Website",
-        "href": "https://algo-lens.lukasmueller.dev"
-      }
-    ],
-    "body": "Writing coming soon."
-  },
-  {
     "slug": "agentic-dev-toolkit",
     "title": "agentic-dev-toolkit",
     "venue": "Open Source",
@@ -64,7 +42,7 @@
     "slug": "mini-vla",
     "title": "mini-vla",
     "venue": "Open Source",
-    "period": "Jun. 2026",
+    "period": "May 2026 - Jun. 2026",
     "blurb": "What's the smallest VLA model viable for which task?",
     "tags": [
       "VLM"
