@@ -3,7 +3,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { projects, getProject, profile, externalLinkProps } from "@/lib/content";
+import {
+  projects,
+  getProject,
+  profile,
+  externalLinkProps,
+  DEMO_PROJECT_SLUG,
+  DEMO_HREF,
+} from "@/lib/content";
 import { renderBody } from "@/lib/richtext";
 import AiDisclaimer from "@/components/AiDisclaimer";
 
@@ -46,6 +53,18 @@ export default async function ProjectPage({
         </div>
 
         <p className="section-lead">{project.blurb}</p>
+
+        {/* The demo half of the pairing: the hero links here, this links back.
+            Sits above the body because the write-up's own copy points at it
+            ("you can try it..."), and a reader who came for the demo should
+            not have to find it in the link row under the tags. */}
+        {project.slug === DEMO_PROJECT_SLUG && (
+          <div className="detail-demo">
+            <Link className="btn-primary" href={DEMO_HREF}>
+              Try the live demo
+            </Link>
+          </div>
+        )}
 
         {project.aiAssisted && <AiDisclaimer />}
 

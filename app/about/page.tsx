@@ -23,8 +23,8 @@ export default function AboutPage() {
         <div className="prose">
           <p>
             My first robot was a Lego Mindstorms EV3 I got when I was 13, and I still remember
-            spending many hours getting it to drive toward the brightest spot in
-            my room. That interest went quiet for a while. I started out studying
+            spending many hours getting it to follow a flashlight in my room.
+            That interest went quiet for a while. I started out studying
             Digital Business Management, until a data science and machine
             learning course during Covid pulled me back in. I realized I am more interested
             in mathematics and programming than business, and wanted a proper

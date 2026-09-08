@@ -85,6 +85,16 @@ export const projects = projectsData as Project[];
 // An empty blog repo yields [], and the blog page shows "Writing Coming Soon".
 export const posts = postsData as Post[];
 
+// The one project whose write-up and hero demo point at each other: the hero
+// links to /projects/mini-vla, and that page links back to /#demo. Hardcoded
+// (not a data field) because the pairing is editorial — there is exactly one
+// demo, and it is not something a README's frontmatter should be able to move.
+export const DEMO_PROJECT_SLUG = "mini-vla";
+
+/** The home-page anchor that lands on the hero demo, unrolled on mobile.
+ *  Hero.tsx opens the stacked demo when it mounts with this hash. */
+export const DEMO_HREF = "/#demo";
+
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug);
 export const getPost = (slug: string) => posts.find((p) => p.slug === slug);
 

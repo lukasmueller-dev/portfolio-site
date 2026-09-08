@@ -9,7 +9,7 @@ import {
   useState,
 } from "react";
 import Link from "next/link";
-import { profile, resumeDownloadName } from "@/lib/content";
+import { DEMO_PROJECT_SLUG, profile, resumeDownloadName } from "@/lib/content";
 import { REST, clamp } from "mini-vla/geometry";
 import {
   paintScene,
@@ -1590,17 +1590,32 @@ export default function Hero() {
   // was in progress, pauses it through the normal path so status/loss/bar stay
   // consistent when it is reopened. Reopening deliberately does NOT resume:
   // the viewer restarts it from the bar, exactly as after any manual pause.
-  const openDemo = () => {
+  const openDemo = useCallback(() => {
     showDemoRef.current = true;
     setShowDemo(true);
     setFlashCta(false); // the nudge did its job (or the viewer beat it to it)
-  };
+  }, []);
   const closeDemo = () => {
     showDemoRef.current = false;
     setShowDemo(false);
     autoPausedRef.current = false;
     pauseTraining();
   };
+
+  // Deep link in from the write-up (/#demo, see DEMO_HREF): the browser's own
+  // anchor scroll lands on the ring, but below STACKED_MQ the pipeline is
+  // hidden behind the CTA — so without this the link that promised a demo
+  // arrives at a hero with no demo on it. Above the breakpoint showDemo is
+  // inert (the .demo-open rules are all scoped to the media query), so opening
+  // unconditionally costs the desktop nothing.
+  useEffect(() => {
+    if (window.location.hash !== "#demo") return;
+    // Next frame, not a bare call: setState synchronously in an effect body is
+    // a lint error (react-hooks/set-state-in-effect) and a cascading render.
+    // A frame is well inside the browser's own scroll-to-anchor.
+    const id = requestAnimationFrame(openDemo);
+    return () => cancelAnimationFrame(id);
+  }, [openDemo]);
 
   // Battery + context guards. A training run behind a hidden tab or scrolled
   // far off screen is invisible work: pause it immediately (battery). If it
@@ -2086,6 +2101,7 @@ export default function Hero() {
 
   return (
     <header
+      id="demo"
       className={`hero ${stateClass}${showDemo ? " demo-open" : ""}`}
       ref={stageRef}
     >
@@ -2172,7 +2188,10 @@ export default function Hero() {
               <div className="vla-loss">
                 <div className="vla-loss-head">
                   <div className="vla-loss-label">Huber Loss</div>
-                  <Link className="vla-project-link" href="/projects/mini-vla">
+                  <Link
+                    className="vla-project-link"
+                    href={`/projects/${DEMO_PROJECT_SLUG}`}
+                  >
                     mini-vla ↗︎
                   </Link>
                 </div>
@@ -2190,7 +2209,10 @@ export default function Hero() {
                   arrow stays on the standalone loss-head link. */}
               <span className="vla-teaser">
                 Trains the{" "}
-                <Link className="vla-project-link" href="/projects/mini-vla">
+                <Link
+                  className="vla-project-link"
+                  href={`/projects/${DEMO_PROJECT_SLUG}`}
+                >
                   mini-vla
                 </Link>{" "}
                 model in your browser (takes&nbsp;~60s)

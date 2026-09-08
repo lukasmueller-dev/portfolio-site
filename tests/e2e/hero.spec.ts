@@ -35,3 +35,27 @@ test("mobile demo opens and closes cleanly", async ({ page, isMobile }) => {
   await expect(page.locator(".vla-bar")).toBeHidden();
   expect(errors).toEqual([]);
 });
+
+// The write-up ↔ demo pairing (lib/content.ts DEMO_PROJECT_SLUG / DEMO_HREF).
+// Both ends are hardcoded links, and on the mobile tier the target needs
+// Hero.tsx's hash effect to unroll the stack — a plain anchor would land on a
+// hero with no pipeline on it.
+test("the mini-vla write-up's CTA lands on an open demo", async ({ page }) => {
+  const errors = collectPageErrors(page);
+
+  await page.goto("/projects/mini-vla");
+  await page.getByRole("link", { name: "Try the live demo" }).click();
+
+  await expect(page).toHaveURL(/\/#demo$/);
+  await expect(page.locator(".vla-bar")).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
+test("a cold /#demo load opens the demo", async ({ page }) => {
+  const errors = collectPageErrors(page);
+
+  await page.goto("/#demo");
+
+  await expect(page.locator(".vla-bar")).toBeVisible();
+  expect(errors).toEqual([]);
+});
