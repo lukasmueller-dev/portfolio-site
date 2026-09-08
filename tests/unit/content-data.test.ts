@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  DEMO_PROJECT_SLUG,
   getPost,
   getProject,
   posts,
@@ -37,8 +38,9 @@ describe("projects-data.json", () => {
   });
 
   it("still contains the mini-vla project the hero links to", () => {
-    // Hero.tsx hard-links to /projects/mini-vla; losing that project 404s the link.
-    expect(getProject("mini-vla")).toBeDefined();
+    // Hero.tsx hard-links to /projects/<DEMO_PROJECT_SLUG>; losing that
+    // project 404s the link (and drops the write-up's link back to /#demo).
+    expect(getProject(DEMO_PROJECT_SLUG)).toBeDefined();
   });
 
   it("has an entry for every project configured in config/projects.sources.json", () => {

@@ -2275,6 +2275,14 @@ a {
   width: 160px;
   height: 160px;
 }
+/* the mini-vla demo CTA above the write-up body; flex so the inline <a>'s
+   padding lays out as a block, and so a second CTA can join the row later */
+.detail-demo {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 0 0 30px;
+}
 .detail-links {
   display: flex;
   gap: 22px;
