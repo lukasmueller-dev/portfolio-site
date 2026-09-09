@@ -28,15 +28,20 @@ npm run deploy                         # build + deploy to Cloudflare Workers
 
 ## Architecture
 
-**Content is fetched at build time, never at request time.** Cloudflare
-Workers has no runtime filesystem, so `scripts/gen-*.mjs` (run via `predev`/
-`prebuild`) pull from private GitHub repos listed in `config/*.sources.json`
-into `lib/*-data.json`. Those JSON files are **committed**, so `next dev`,
-`tsc`, and CI all run offline from last-known content — a missing
-`GITHUB_TOKEN` degrades projects/blog to the committed snapshot but hard-fails
-the résumé fetch (no fallback exists for it). `lib/content.ts` is the single
-import point for this data (`projects`, `posts`, `profile`, `nav`) — pages
-never read the generator scripts or `config/` directly.
+**Content is fetched on `npm run dev`, never at request time or on a build.**
+Cloudflare Workers has no runtime filesystem, so `gen-projects-data.mjs` /
+`gen-blog-data.mjs` pull from private GitHub repos listed in
+`config/*.sources.json` into `lib/*-data.json` plus `public/{projects,blog}/`.
+**Only `predev` runs them** — `prebuild` runs just `copy-vla-assets` +
+`build-resume.sh`, and `preview`/`deploy`/`e2e:build`/CI skip `prebuild`
+entirely. So the JSON *and* the images it points at are **committed**, and
+every build serves that snapshot; `tests/unit/public-assets.test.ts` fails if
+a referenced image is not committed. Refresh content with `npm run dev` (needs
+`GITHUB_TOKEN`) and commit JSON + images together. The résumé is the exception
+— `build-resume.sh` runs on every build and hard-fails without a token.
+`lib/content.ts` is the single import point for this data (`projects`, `posts`,
+`profile`, `nav`) — pages never read the generator scripts or `config/`
+directly.
 
 **The Hero VLA demo is the centerpiece and lives almost entirely in
 `components/Hero.tsx`** (~2500 lines): a TensorFlow.js behavior-cloning
