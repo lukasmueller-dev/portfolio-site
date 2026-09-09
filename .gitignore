@@ -56,16 +56,11 @@ next-env.d.ts
 /public/resume.out
 /public/resume.synctex.gz
 
-# Blog post images fetched at build time from the blog repo (config/blog.sources.json)
-# by scripts/gen-blog-data.mjs. The parsed lib/posts-data.json stays committed so
-# `next dev` and typecheck work without a fetch.
-/public/blog/
-
-# Project images fetched at build time from the content repo (config/projects.sources.json)
-# by scripts/gen-projects-data.mjs, which is their source of truth (<contentDir>/assets/).
-# The parsed lib/projects-data.json stays committed so `next dev` and typecheck work
-# without a fetch; with no GITHUB_TOKEN the text renders but the images 404.
-/public/projects/
+# NOT ignored: /public/blog/ and /public/projects/ are committed next to the
+# lib/*-data.json that points at them. Only `predev` runs gen-*-data.mjs, so
+# build/preview/deploy/CI never fetch — ignoring the images made every one of
+# them ship /projects/<slug>/*.png paths with no file behind them (404 live).
+# `npm run dev` refreshes images + JSON together; commit both.
 
 # Build ID: generated at build/dev startup (next.config.mjs) for the stale-tab
 # reload guard. The deployed /build-id.json is revalidated (see public/_headers).
