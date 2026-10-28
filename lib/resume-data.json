@@ -20,12 +20,20 @@
       "title": "Education",
       "entries": [
         {
+          "title": "Master of Science in Autonomous Systems and Robotics",
+          "dates": "Starting Oct. 2026",
+          "org": "Technical University of Darmstadt",
+          "location": "Darmstadt, HE",
+          "bullets": []
+        },
+        {
           "title": "Bachelor of Science in Computer Science",
           "dates": "Oct. 2023 – Present",
           "org": "Technical University of Darmstadt",
           "location": "Darmstadt, HE",
           "bullets": [
             "Current grade: 1.1 German scale (GPA: 3.9)",
+            "Thesis (ongoing) at the Intelligent Autonomous Systems Group (Prof. Jan Peters): \\ When, How and Why a Released Humanoid Vision-Language-Action Model Fails in Loco-Manipulation",
             "Exchange semester: Aarhus University, Denmark, Jan. 2026 – Jun. 2026",
             "Elective courses: Robot Learning, Visual Computing, Markov Decision Theory, Machine Learning in Game Theory"
           ]
@@ -37,7 +45,8 @@
           "location": "Mannheim, BW",
           "bullets": [
             "Final grade: 1.2 German scale (GPA: 3.8)",
-            "Thesis: Conception of a Strategy to Increase Data Quality for a Predictive Analytics Application"
+            "Thesis: Conception of a Strategy to Increase Data Quality for a Predictive Analytics Application",
+            "Completed internship rotations at Fresenius SE in Project Management, Business Intelligence, and Process Mining"
           ]
         }
       ],
@@ -52,9 +61,8 @@
           "org": "Compredict GmbH",
           "location": "Darmstadt, HE",
           "bullets": [
-            "Implemented a contrastive timestamp-embedding model in Keras and integrated it into a production Python package for time-series analysis and visualization",
-            "Developed Python packages for data quality and data labeling for high-frequency time-series data, including core logic, tests, and documentation",
-            "Built unit and integration tests for data pipelines in MWAA and FastAPI services to improve reliability of ML systems"
+            "Implemented a contrastive timestamp-embedding model in Keras for a production time-series package",
+            "Developed Python packages for data quality and data labeling for high-frequency time-series data, including core logic, tests, and documentation"
           ]
         },
         {
@@ -63,17 +71,8 @@
           "org": "BioNTech SE",
           "location": "Mainz, RP",
           "bullets": [
-            "Developed a data pipeline transferring local research files to AWS (S3/Glue/Redshift) and making them accessible in a data warehouse",
+            "Developed a data pipeline transferring local research files to AWS and making them accessible in a data warehouse",
             "Extended a bioinformatics feature pipeline used for downstream machine learning workflows"
-          ]
-        },
-        {
-          "title": "Cooperative Education Student",
-          "dates": "Aug. 2019 – Sep. 2022",
-          "org": "Fresenius Group",
-          "location": "Bad Homburg, HE",
-          "bullets": [
-            "Completed internship rotations in Project Management, Business Intelligence, and Process Mining"
           ]
         }
       ],
@@ -96,13 +95,13 @@
         },
         {
           "title": "mini-vla: A Tiny, Language-Conditioned Vision-Language-Action Policy",
-          "dates": "Jun. 2026",
+          "dates": "May – Jun. 2026",
           "org": "Open Source",
           "location": "",
           "slug": "mini-vla",
           "bullets": [
             "Designed a language-conditioned spatial-attention policy that fuses a rendered scene, a typed command, and gripper state to control a 2-link arm on block-grasping tasks",
-            "Trained the policy via behavioral cloning against a closed-form analytical inverse-kinematics expert, then ported the identical architecture to TensorFlow.js so it trains live in-browser on my personal Portfolio Site",
+            "Trained the policy via behavioral cloning against a closed-form analytical inverse-kinematics expert, then ported the identical architecture to TensorFlow.js so it trains live in-browser",
             "Technologies: Python, Keras, TensorFlow.js, Weights & Biases"
           ]
         },
@@ -131,7 +130,7 @@
         },
         {
           "category": "Dev Tooling",
-          "items": "Claude Code, git, CI/CD (GitHub Actions/GitLab CI), Docker"
+          "items": "git, CI/CD (GitHub Actions/GitLab CI), Docker, Claude Code"
         },
         {
           "category": "Programming & Data Engineering",
