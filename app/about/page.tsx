@@ -37,7 +37,8 @@ export default function AboutPage() {
             data engineering tools, and before that at BioNTech and Fresenius. I
             think that &quot;embodied AI&quot; (robots) is the next big step after the current LLM wave.
             Therefore, that&apos;s the direction I want
-            to keep pushing, currently by exploring Imitation Learning and VLAs.
+            to keep pushing, currently through my thesis on VLA failures and
+            research on safe reinforcement learning.
             Away from the screen you&apos;ll usually find me in the gym or on my bike.
           </p>
         </div>

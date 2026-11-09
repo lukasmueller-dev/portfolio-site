@@ -16,6 +16,7 @@ const FIXTURE = String.raw`
 \resumeSubheading{Research Assistant}{Apr 2025 -- Sep 2025}{Some Lab \& Institute}{Frankfurt}
 \resumeItem{Built a \textbf{VLA} pipeline with 95\% success.}
 \resumeItem{Nested braces: \href{https://x.dev}{link text} end.}
+\resumeItem{Thesis: \\ A Title.}
 
 \section{Projects}
 \resumeSubheading
@@ -52,6 +53,7 @@ describe("parseResume (fixture)", () => {
     expect(exp.bullets).toEqual([
       "Built a VLA pipeline with 95% success.",
       "Nested braces: link text end.",
+      "Thesis: A Title.",
     ]);
   });
 

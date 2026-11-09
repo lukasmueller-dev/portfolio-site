@@ -56,11 +56,12 @@ function stripInline(s: string): string {
   t = t.replace(/\\([&%$#_])/g, "$1");
   // ranges and dashes
   t = t.replace(/---/g, "—").replace(/--/g, "–");
+  // \\ line breaks; must run before the "\ " macro below, which leaves a stray backslash
+  t = t.replace(/\\\\/g, " ");
   // ties and spacing macros
   t = t.replace(/~/g, " ").replace(/\\,/g, " ").replace(/\\ /g, " ");
-  // drop leftover \vspace{...}, \\ line breaks, stray braces from macros
+  // drop leftover \vspace{...}, stray braces from macros
   t = t.replace(/\\vspace\{[^}]*\}/g, "");
-  t = t.replace(/\\\\/g, " ");
   t = t.replace(/\$\\vert\$/g, "|");
   t = t.replace(/\$\|\$/g, "|");
   t = t.replace(/[{}]/g, "");
