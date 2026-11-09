@@ -50,9 +50,10 @@ export const profile = {
   lead: [
     "Building intelligent machines that learn.",
     "Passionate about probability theory, machine learning, and robot learning.",
-    "Currently focused on VLA models for imitation learning."
+    "My current focus is on Vision-Language-Action model failures in humanoid loco-manipulation and safe reinforcement learning.",
+    "Bachelor thesis: When, How and Why Released Humanoid Vision-Language-Action Models Fail in Loco-Manipulation."
   ],
-  focus: "Imitation Learning, VLAs",
+  focus: "VLAs, Safe RL",
   field: "Machine Learning & Robot Learning",
   location: "Frankfurt, Germany",
   email: "contact@lukasmueller.dev",
