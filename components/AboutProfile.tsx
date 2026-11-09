@@ -1,8 +1,7 @@
 import Image from "next/image";
 import { profile } from "@/lib/content";
 
-// Shared profile blocks used by both the home preview (components/About.tsx) and
-// the full /about page (app/about/page.tsx), which rendered identical markup.
+// AboutHead: home preview (components/About.tsx) and /about. ProfileInfoGrid: /about only.
 
 /** Portrait photo beside the multi-line lead paragraph. */
 export function AboutHead() {
