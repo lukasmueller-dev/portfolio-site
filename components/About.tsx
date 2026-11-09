@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { AboutHead, ProfileInfoGrid } from "@/components/AboutProfile";
+import { AboutHead } from "@/components/AboutProfile";
 
 // Home preview: short about block with a link to the full /about page.
 export default function About() {
@@ -10,7 +10,6 @@ export default function About() {
         <Link href="/about">More</Link>
       </div>
       <AboutHead />
-      <ProfileInfoGrid />
     </section>
   );
 }
